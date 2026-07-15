@@ -6,7 +6,7 @@
     <title>釜山漫遊・五天四夜手繪旅遊手冊</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/10641/10641465.png" type="image/png">
+    <link rel="icon" href="./img/icon.png" type="image/png">
     <style>
         body {
             font-family: 'Noto Sans TC', sans-serif;
@@ -15,6 +15,10 @@
             color: #3d3b38;
         }
         
+        /* 加入頁籤跳轉功能 */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s; }
+
         /* 手繪風邊框 */
         .sketch-border {
             border: 2px solid #4a4a4a;
@@ -201,7 +205,7 @@
 <div class="max-w-3xl mx-auto space-y-10">
 
     <!-- 封面 -->
-    <header class="sketch-border p-8 relative mt-4">
+    <header id="home" class="tab-content active sketch-border p-8 relative mt-4">
         <div class="tape"></div>
         <div class="text-center">
             <h1 class="text-3xl md:text-4xl font-bold mb-4 tracking-wider">🇰🇷 釜山悠閒五日遊手冊</h1>
@@ -210,11 +214,11 @@
             <div class="bg-blue-50 p-4 rounded-lg sketch-border-alt text-left mb-4">
                 <h3 class="font-bold text-lg mb-2">✨ 行程最高原則</h3>
                 <ul class="space-y-2 text-gray-700">
-                    <li>✅ <strong>不走回頭路：</strong>順著地理方位規劃。</li>
-                    <li>✅ <strong>區域劃分：</strong>每天集中一個大區，減少拉車。</li>
-                    <li>✅ <strong>悠閒漫遊：</strong>絕不趕行程，適合輕鬆遊。</li>
-                    <li>✅ <strong>固定住宿：</strong>全程入住 Fairfield by Marriott Busan (海雲台)。</li>
-                    <li>✅ <strong>舒適交通：</strong>以計程車 🚕 為主，必要時步行 🚶。</li>
+                    <li>✅ <strong>不走回頭路：</strong><br/>順著地理方位規劃。</li>
+                    <li>✅ <strong>區域劃分：</strong><br/>每天集中一個大區，減少拉車。</li>
+                    <li>✅ <strong>悠閒漫遊：</strong><br/>絕不趕行程，適合輕鬆遊。</li>
+                    <li>✅ <strong>固定住宿：</strong><br/>全程入住 Fairfield by Marriott Busan (海雲台)。</li>
+                    <li>✅ <strong>舒適交通：</strong><br/>以計程車 🚕 為主，必要時步行 🚶。</li>
                 </ul>
             </div>
         </div>
@@ -267,7 +271,7 @@
     </svg>
 
     <!-- Day 1 -->
-    <section class="sketch-border p-6 relative">
+    <section id="day1" class="tab-content sketch-border p-6 relative">
         <div class="tape-corner"></div>
         <h2 class="text-2xl font-bold mb-2"><span class="highlight">Day 1｜抵達釜山・海雲台散步</span></h2>
         <p class="text-sm text-gray-500 mb-4">🚕 交通：計程車＋步行 | 🚶 步行量：★☆☆☆☆ 輕鬆</p>
@@ -330,9 +334,10 @@
             </div>
             <div class="bg-yellow-50 p-4 rounded sketch-border-alt h-fit">
                 <h4 class="font-bold mb-2">🌟 今日亮點</h4>
-                <div class="badge">🦐 海雲台市場美食</div>
-                <div class="badge">🌙 沙灘夜景</div>
-                <div class="badge">🧘 飯店周邊逛逛</div>
+                <div class="badge"><a href="https://maps.app.goo.gl/cNPD4UfcxiiBfhPt6" class="text-blue-500 hover:underline">🍢 海雲台市場美食</a></div>
+                <div class="badge"><a href="https://maps.app.goo.gl/qexmxgRjf4jw8enx5" class="text-blue-500 hover:underline">🍜 海雲台31cm海鮮刀削麵</a></div>
+                <div class="badge"><a href="https://maps.app.goo.gl/343oq5WocbyNkEP38" class="text-blue-500 hover:underline">🏖️ 海雲台沙灘</a></div>
+                <div class="badge"><a href="https://maps.app.goo.gl/Pv6efnBYN9EocxuH9" class="text-blue-500 hover:underline">🧘 龜南路商圈</a></div>
 
                 <div class="polaroid" style="bottom: 20px; right: 20px; transform: rotate(-5deg);">
                     <div class="photo-placeholder" style="background: #2c3e50; border-bottom: 5px solid #34495e;"></div>
@@ -349,7 +354,7 @@
     </section>
 
     <!-- Day 2 -->
-    <section class="sketch-border p-6 relative">
+    <section id="day2" class="tab-content sketch-border p-6 relative">
         <div class="tape text-center" style="left: 80%; top: -10px; width: 60px;"></div>
         <h2 class="text-2xl font-bold mb-2"><span class="highlight">Day 2｜東釜山海岸線一日遊</span></h2>
         <p class="text-sm text-gray-500 mb-4">🚕 交通：Beach Train＋計程車＋步行 | 🚶 步行量：★★★☆☆ 中等</p>
@@ -419,11 +424,11 @@
             </div>
             <div class="bg-yellow-50 p-4 rounded sketch-border-alt h-fit">
                 <h4 class="font-bold mb-2">🌟 今日亮點</h4>
-                <div class="badge"><a href="https://maps.app.goo.gl/mjyYQtgzNbPWUCNu6" target="_blank">🥐 自然島鹽麵包</a></div>
-                <div class="badge"><a href="https://maps.app.goo.gl/hnELfgML4RpKHRYc7" target="_blank">🚂 海岸/膠囊列車</a></div>
-                <div class="badge"><a href="https://maps.app.goo.gl/GdvDMzj3222chdYF7" target="_blank">⛩️ 海東龍宮寺</a></div>
-                <div class="badge"><a href="https://maps.app.goo.gl/jWeFMdBcWojBynjy7" target="_blank">☁️ X the SKY</a></div>
-                <div class="badge"><a href="https://maps.app.goo.gl/kLh7ce4jcyhjHFHJA" target="_blank">🧖 ClubD 汗蒸幕</a></div>
+                <div class="badge"><a href="https://maps.app.goo.gl/mjyYQtgzNbPWUCNu6" class="text-blue-500 hover:underline">🥐 自然島鹽麵包</a></div>
+                <div class="badge"><a href="https://maps.app.goo.gl/hnELfgML4RpKHRYc7" class="text-blue-500 hover:underline">🚂 海岸/膠囊列車</a></div>
+                <div class="badge"><a href="https://maps.app.goo.gl/GdvDMzj3222chdYF7" class="text-blue-500 hover:underline">⛩️ 海東龍宮寺</a></div>
+                <div class="badge"><a href="https://maps.app.goo.gl/jWeFMdBcWojBynjy7" class="text-blue-500 hover:underline">☁️ X the SKY</a></div>
+                <div class="badge"><a href="https://maps.app.goo.gl/kLh7ce4jcyhjHFHJA" class="text-blue-500 hover:underline">🧖 ClubD 汗蒸幕</a></div>
 
                 <div class="polaroid" style="bottom: 20px; right: 20px; transform: rotate(-5deg);">
                     <div class="photo-placeholder" style="background: #27ae60;"></div>
@@ -440,7 +445,7 @@
     </section>
 
     <!-- Day 3 -->
-    <section class="sketch-border p-6 relative">
+    <section id="day3" class="tab-content sketch-border p-6 relative">
         <div class="tape-corner" style="top:-5px; right:-20px; left:auto; transform: rotate(45deg);"></div>
         <h2 class="text-2xl font-bold mb-2"><span class="highlight">Day 3｜松島海岸＋白淺灘＋廣安里夜景</span></h2>
         <p class="text-sm text-gray-500 mb-4">🚕 交通：計程車＋步行 | 🚶 步行量：★★☆☆☆ 輕鬆</p>
@@ -526,7 +531,7 @@
     </section>
 
     <!-- Day 4 -->
-    <section class="sketch-border p-6 relative">
+    <section id="day4" class="tab-content sketch-border p-6 relative">
         <div class="tape text-center" style="left: 20%; top: -10px; width: 60px;"></div>
         <h2 class="text-2xl font-bold mb-2"><span class="highlight">Day 4｜甘川文化村＋南浦洞商圈</span></h2>
         <p class="text-sm text-gray-500 mb-4">🚕 交通：計程車＋步行 | 🚶 步行量：★★★☆☆ 中等</p>
@@ -603,7 +608,7 @@
     </section>
 
     <!-- Day 5 -->
-    <section class="sketch-border p-6 relative">
+    <section id="day5" class="tab-content sketch-border p-6 relative">
         <div class="tape-corner"></div>
         <h2 class="text-2xl font-bold mb-2"><span class="highlight">Day 5｜悠閒散步・準備返台</span></h2>
         <p class="text-sm text-gray-500 mb-4">🚶 交通：步行＋計程車 | 🚶 步行量：★★☆☆☆ 輕鬆</p>
@@ -675,7 +680,7 @@
     </section>
 
     <!-- 總結與評價 -->
-    <section class="sketch-border p-6 mb-12 bg-white">
+    <section id="sum" class="tab-content sketch-border p-6 mb-12 bg-white">
         <h2 class="text-2xl font-bold mb-4">📌 行程總結</h2>
         
         <div class="text-gray-700 space-y-4">            
@@ -692,7 +697,30 @@
         </div>
     </section>
 
+    <nav class="flex flex-wrap gap-2 justify-center border-t-2 border-dashed border-[#dcd3c1] pt-6">
+        <button onclick="openTab(event, 'home')" class="tab-btn px-4 py-2 bg-[#e0d8c3] rounded-b-lg font-bold text-[#5d4037] hover:bg-[#d4caae] transition active">首頁</button>
+        <button onclick="openTab(event, 'day1')" class="tab-btn px-4 py-2 bg-[#e0d8c3] rounded-b-lg font-bold text-[#5d4037] hover:bg-[#d4caae]">Day 1</button>
+        <button onclick="openTab(event, 'day2')" class="tab-btn px-4 py-2 bg-[#e0d8c3] rounded-b-lg font-bold text-[#5d4037] hover:bg-[#d4caae]">Day 2</button>
+        <button onclick="openTab(event, 'day3')" class="tab-btn px-4 py-2 bg-[#e0d8c3] rounded-b-lg font-bold text-[#5d4037] hover:bg-[#d4caae]">Day 3</button>
+        <button onclick="openTab(event, 'day4')" class="tab-btn px-4 py-2 bg-[#e0d8c3] rounded-b-lg font-bold text-[#5d4037] hover:bg-[#d4caae]">Day 4</button>
+        <button onclick="openTab(event, 'day5')" class="tab-btn px-4 py-2 bg-[#e0d8c3] rounded-b-lg font-bold text-[#5d4037] hover:bg-[#d4caae]">Day 5</button>
+        <button onclick="openTab(event, 'sum')" class="tab-btn px-4 py-2 bg-[#e0d8c3] rounded-b-lg font-bold text-[#5d4037] hover:bg-[#d4caae]">結語</button>
+    </nav>
 </div>
 
+    <script>
+        function openTab(evt, tabName) {
+            const contents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < contents.length; i++) {
+                contents[i].classList.remove("active");
+            }
+            const btns = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < btns.length; i++) {
+                btns[i].style.backgroundColor = "#e0d8c3";
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.style.backgroundColor = "#dcd3c1";
+        }
+    </script>
 </body>
 </html>
