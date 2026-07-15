@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>釜山漫遊・五天四夜手繪旅遊手冊</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f4f1ea; /* 紙張底色 */
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            color: #3d3b38;
+        }
+        
+        /* 手繪風邊框 */
+        .sketch-border {
+            border: 2px solid #4a4a4a;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            background-color: #fffdf9;
+            box-shadow: 3px 4px 0px rgba(0,0,0,0.1);
+        }
+
+        .sketch-border-alt {
+            border: 2px solid #4a4a4a;
+            border-radius: 15px 225px 15px 255px/255px 15px 225px 15px;
+            background-color: #fffdf9;
+        }
+
+        /* 膠帶效果 */
+        .tape {
+            position: absolute;
+            width: 100px;
+            height: 25px;
+            background-color: rgba(239, 235, 179, 0.7);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            transform: rotate(-3deg);
+            top: -10px;
+            left: 50%;
+            margin-left: -50px;
+            z-index: 20;
+        }
+
+        .tape-corner {
+            position: absolute;
+            width: 80px;
+            height: 25px;
+            background-color: rgba(255, 204, 204, 0.6);
+            transform: rotate(-45deg);
+            top: -5px;
+            left: -20px;
+            z-index: 20;
+        }
+
+        /* 手繪螢光筆劃線效果 */
+        .highlight {
+            background: linear-gradient(104deg, rgba(255, 250, 150, 0) 0.9%, rgba(255, 250, 150, 0.8) 2.4%, rgba(255, 228, 150, 0.5) 5.8%, rgba(255, 250, 150, 0.9) 93%, rgba(255, 250, 150, 0) 96%);
+            padding: 0 0.2em;
+        }
+
+        /* 復古地圖框架 (對應參考圖的外框效果) */
+        .vintage-map-wrapper {
+            position: relative;
+            background-color: #fbf8f1;
+            border: 3px solid #5b4636;
+            padding: 8px;
+            box-shadow: 3px 5px 15px rgba(0,0,0,0.15);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        .vintage-map-inner-border {
+            border: 2px solid #5b4636;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 比例 */
+            position: relative;
+            background: linear-gradient(135deg, rgba(226, 236, 211, 0.4) 0%, transparent 30%),
+                        linear-gradient(225deg, rgba(220, 237, 240, 0.6) 0%, transparent 40%);
+            overflow: hidden;
+        }
+
+        /* 偽裝成相片/拍立得的裝飾 */
+        .polaroid {
+            position: absolute;
+            background: white;
+            padding: 6px 6px 16px 6px;
+            box-shadow: 2px 4px 8px rgba(0,0,0,0.2);
+            border: 1px solid #ddd;
+            z-index: 20;
+            border-radius: 2px;
+            font-size: 0.6rem;
+            text-align: center;
+            color: #555;
+            font-family: 'Nunito', sans-serif;
+        }
+        .polaroid img, .polaroid .photo-placeholder {
+            width: 103px;
+            height: 77px;
+            background-color: #c8d6e5;
+            display: block;
+            margin-bottom: 4px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+
+        /* 地標圖標樣式 (復刻手繪框與圖示) */
+        .map-point {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 30;
+            transition: transform 0.2s;
+        }
+        .map-point:hover { transform: translate(-50%, -50%) scale(1.1); }
+        
+        .icon-box {
+            background-color: #fff;
+            border: 2px solid #3b312a;
+            border-radius: 8px;
+            padding: 4px 6px;
+            box-shadow: 2px 2px 0px rgba(59, 49, 42, 0.8);
+            font-size: 1.2rem;
+            line-height: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .icon-box.hotel { background-color: #9b59b6; color: white; border-color: #2c3e50; }
+        .icon-box.train { background-color: #3498db; color: white; border-radius: 50%; width: 32px; height: 32px; padding: 0;}
+        .icon-box.attraction { background-color: #f1c40f; border-color: #8e44ad; }
+        
+        .label-box {
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1.5px solid #3b312a;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #3b312a;
+            white-space: nowrap;
+            box-shadow: 1px 1px 0px rgba(59, 49, 42, 0.5);
+        }
+
+        /* Day X 膠囊標籤 */
+        .day-badge {
+            position: absolute;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-weight: 900;
+            font-size: 0.85rem;
+            border: 2px solid #3b312a;
+            box-shadow: 2px 2px 0px #3b312a;
+            z-index: 25;
+            font-family: 'Nunito', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        /* 羅盤 */
+        .compass {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 40px;
+            z-index: 15;
+            opacity: 0.8;
+        }
+
+        /* 每日行程時間軸 */
+        .timeline {
+            border-left: 2px dashed #a0a0a0;
+            margin-left: 10px;
+            padding-left: 20px;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        .timeline-item::before {
+            content: '📌';
+            position: absolute;
+            left: -32px;
+            top: 0px;
+            font-size: 1.1rem;
+            background-color: #fffdf9;
+        }
+        .icon-car {
+            content: '🚕';
+        }
+    </style>
+</head>
+<body class="py-8 px-4 md:px-0">
+
+<div class="max-w-3xl mx-auto space-y-10">
+
+    <!-- 封面 -->
+    <header class="sketch-border p-8 relative mt-4">
+        <div class="tape"></div>
+        <div class="text-center">
+            <h1 class="text-3xl md:text-4xl font-bold mb-4 tracking-wider">🇰🇷 釜山悠閒五日遊手冊</h1>
+            <p class="text-gray-600 mb-6 text-lg">海景 🌊 × 美食 🍲 × 文化 🏘️</p>
+            <img src="https://share.gemini.google/EBrsrdJDbBr1"/>
+            <div class="bg-blue-50 p-4 rounded-lg sketch-border-alt text-left mb-4">
+                <h3 class="font-bold text-lg mb-2">✨ 行程最高原則</h3>
+                <ul class="space-y-2 text-gray-700">
+                    <li>✅ <strong>不走回頭路：</strong>順著地理方位規劃。</li>
+                    <li>✅ <strong>區域劃分：</strong>每天集中一個大區，減少拉車。</li>
+                    <li>✅ <strong>悠閒漫遊：</strong>絕不趕行程，適合輕鬆遊。</li>
+                    <li>✅ <strong>固定住宿：</strong>全程入住 Fairfield by Marriott Busan (海雲台)。</li>
+                    <li>✅ <strong>舒適交通：</strong>以計程車 🚕 為主，必要時步行 🚶。</li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- STREAMING_CHUNK: Rendering Map SVG Definitions... -->
+    <!-- 共用 SVG 定義 (箭頭與圖樣) -->
+    <svg width="0" height="0" class="hidden">
+        <defs>
+            <!-- 粗邊框紅色箭頭 -->
+            <marker id="arrow-red" viewBox="0 0 14 14" refX="11" refY="7" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M 0 2 L 12 7 L 0 12 z" fill="#e74c3c" stroke="#2c3e50" stroke-width="2" stroke-linejoin="round"/>
+            </marker>
+            <!-- 粗邊框綠色箭頭 -->
+            <marker id="arrow-green" viewBox="0 0 14 14" refX="11" refY="7" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M 0 2 L 12 7 L 0 12 z" fill="#2ecc71" stroke="#2c3e50" stroke-width="2" stroke-linejoin="round"/>
+            </marker>
+            <!-- 粗邊框紫色箭頭 -->
+            <marker id="arrow-purple" viewBox="0 0 14 14" refX="11" refY="7" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M 0 2 L 12 7 L 0 12 z" fill="#9b59b6" stroke="#2c3e50" stroke-width="2" stroke-linejoin="round"/>
+            </marker>
+            <!-- 粗邊框橘色箭頭 -->
+            <marker id="arrow-orange" viewBox="0 0 14 14" refX="11" refY="7" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M 0 2 L 12 7 L 0 12 z" fill="#f39c12" stroke="#2c3e50" stroke-width="2" stroke-linejoin="round"/>
+            </marker>
+            <!-- 粗邊框藍色箭頭 -->
+            <marker id="arrow-blue" viewBox="0 0 14 14" refX="11" refY="7" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M 0 2 L 12 7 L 0 12 z" fill="#3498db" stroke="#2c3e50" stroke-width="2" stroke-linejoin="round"/>
+            </marker>
+            
+            <!-- 共用背景紋理 -->
+            <g id="map-bg-pattern">
+                <!-- 虛擬海岸線/河流 (水藍色) -->
+                <path d="M 0 400 Q 200 350 400 420 T 800 350 L 800 450 L 0 450 Z" fill="rgba(173, 216, 230, 0.3)"/>
+                <path d="M 500 0 Q 600 100 700 0 Z" fill="rgba(173, 216, 230, 0.2)"/>
+                <!-- 虛擬公園/綠地 (淺綠色) -->
+                <circle cx="150" cy="150" r="80" fill="rgba(168, 224, 168, 0.2)" filter="blur(5px)"/>
+                <circle cx="650" cy="250" r="100" fill="rgba(168, 224, 168, 0.2)" filter="blur(5px)"/>
+                <!-- 街道網格線 -->
+                <path d="M 0 100 L 800 120 M 0 200 L 800 180 M 0 300 L 800 320" stroke="rgba(255,255,255,0.7)" stroke-width="3" fill="none"/>
+                <path d="M 200 0 L 220 450 M 400 0 L 380 450 M 600 0 L 620 450" stroke="rgba(255,255,255,0.7)" stroke-width="3" fill="none"/>
+            </g>
+
+            <!-- 羅盤 N 指標 -->
+            <g id="compass-icon" stroke="#3b312a" stroke-width="2" fill="none">
+                <path d="M 15 5 L 15 35 M 10 10 L 15 5 L 20 10" />
+                <text x="11" y="25" fill="#3b312a" stroke="none" font-size="14" font-family="Nunito" font-weight="900">N</text>
+            </g>
+        </defs>
+    </svg>
+
+    <!-- Day 1 -->
+    <section class="sketch-border p-6 relative">
+        <div class="tape-corner"></div>
+        <h2 class="text-2xl font-bold mb-2"><span class="highlight">Day 1｜抵達釜山・海雲台散步</span></h2>
+        <p class="text-sm text-gray-500 mb-4">🚕 交通：計程車＋步行 | 🚶 步行量：★☆☆☆☆ 輕鬆</p>
+
+        <!-- 手繪地圖 Day 1 -->
+        <div class="vintage-map-wrapper">
+            <div class="vintage-map-inner-border">
+                <svg viewBox="0 0 800 450" class="absolute inset-0 w-full h-full z-10" preserveAspectRatio="xMidYMid slice">
+                    <use href="#map-bg-pattern" />
+                    <!-- Day 1 路徑 (紅色) -->
+                    <!-- Airport to Hotel: Outline -->
+                    <path d="M 120 220 Q 400 120 620 160" fill="none" stroke="#3b312a" stroke-width="8" />
+                    <!-- Airport to Hotel: Fill -->
+                    <path d="M 120 220 Q 400 120 620 160" fill="none" stroke="#e74c3c" stroke-width="4" marker-end="url(#arrow-red)" />
+                    
+                    <!-- Hotel to Market: Outline -->
+                    <path d="M 660 180 Q 720 220 680 270" fill="none" stroke="#3b312a" stroke-width="8" />
+                    <path d="M 660 180 Q 720 220 680 270" fill="none" stroke="#e74c3c" stroke-width="4" marker-end="url(#arrow-red)" />
+
+                    <!-- Market to Beach: Outline -->
+                    <path d="M 680 300 Q 750 330 720 380" fill="none" stroke="#3b312a" stroke-width="8" />
+                    <path d="M 680 300 Q 750 330 720 380" fill="none" stroke="#e74c3c" stroke-width="4" marker-end="url(#arrow-red)" />
+                </svg>
+
+                <svg class="compass"><use href="#compass-icon"/></svg>
+
+                <!-- 標籤與地標 -->
+                <div class="day-badge bg-[#e74c3c]" style="left: 35%; top: 18%;">Day 1 (15:00)</div>
+                
+                <div class="map-point" style="left: 15%; top: 49%;">
+                    <div class="icon-box train">✈️</div>
+                    <div class="label-box">金海機場</div>
+                </div>
+
+                <div class="map-point" style="left: 80%; top: 35%;">
+                    <div class="icon-box hotel"><span class="text-xs">🛏️</span></div>
+                    <div class="label-box">海雲台(住宿)</div>
+                </div>
+
+                <div class="map-point" style="left: 85%; top: 60%;">
+                    <div class="icon-box attraction" style="background: #e67e22;">🦑</div>
+                    <div class="label-box">傳統市場</div>
+                </div>
+
+                <div class="map-point" style="left: 90%; top: 85%;">
+                    <div class="icon-box" style="background: #3498db; color: white;">🌊</div>
+                    <div class="label-box">海雲台沙灘</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="col-span-2">
+                <div class="timeline text-gray-700">
+                    <div class="timeline-item"><strong>時間：</strong>抵達金海機場<br><span class="text-sm text-gray-500">🚕 約35–45分鐘前往飯店</span></div>
+                    <div class="timeline-item"><strong>15:00後：</strong>飯店寄放行李／Check-in</div>
+                    <div class="timeline-item"><strong>下午：</strong>海雲台傳統市場（午餐／晚餐）</div>
+                    <div class="timeline-item"><strong>傍晚：</strong>Gunam-ro 商圈散步 ➡️ 海雲台海水浴場看夕陽/夜景</div>
+                    <div class="timeline-item"><strong>晚上：</strong>返回飯店休息，適應旅程節奏</div>
+                </div>
+            </div>
+            <div class="bg-yellow-50 p-4 rounded sketch-border-alt h-fit">
+                <h4 class="font-bold mb-2">🌟 今日亮點</h4>
+                <div class="badge">🦐 海雲台市場美食</div>
+                <div class="badge">🌙 沙灘夜景</div>
+                <div class="badge">🧘 輕鬆適應旅程</div>
+
+                <div class="polaroid" style="bottom: 20px; right: 20px; transform: rotate(-5deg);">
+                    <div class="photo-placeholder" style="background: #2c3e50; border-bottom: 5px solid #34495e;"></div>
+                    Haeundae Night
+                </div>
+                <div class="polaroid" style="bottom: 20px; right: 20px; transform: rotate(4deg);">
+                    <div class="photo-placeholder" style="background: #2c3e50; border-bottom: 5px solid #34495e;">
+                        <img src="https://p1-news.hfcdn.com/p1-news/MzI2OTI5OW5ld3M,/a1564068939c4c80_1600x1067.jpg">
+                    </div>
+                    Haeundae Night2
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Day 2 -->
+    <section class="sketch-border p-6 relative">
+        <div class="tape text-center" style="left: 80%; top: -10px; width: 60px;"></div>
+        <h2 class="text-2xl font-bold mb-2"><span class="highlight">Day 2｜東釜山海岸線一日遊</span></h2>
+        <p class="text-sm text-gray-500 mb-4">🚕 交通：Beach Train＋計程車＋步行 | 🚶 步行量：★★★☆☆ 中等</p>
+
+        <!-- 手繪地圖 Day 2 -->
+        <div class="vintage-map-wrapper">
+            <div class="vintage-map-inner-border">
+                <svg viewBox="0 0 800 450" class="absolute inset-0 w-full h-full z-10" preserveAspectRatio="xMidYMid slice">
+                    <use href="#map-bg-pattern" />
+                    <!-- Day 2 路徑 (綠色) -->
+                    <!-- Hotel to Mipo -->
+                    <path d="M 220 250 L 280 220" fill="none" stroke="#3b312a" stroke-width="8" />
+                    <path d="M 220 250 L 280 220" fill="none" stroke="#2ecc71" stroke-width="4" marker-end="url(#arrow-green)" />
+                    <!-- Train: Mipo to Cheongsapo -->
+                    <path d="M 320 200 Q 400 130 500 160" fill="none" stroke="#3b312a" stroke-width="8" stroke-dasharray="12,4"/>
+                    <path d="M 320 200 Q 400 130 500 160" fill="none" stroke="#2ecc71" stroke-width="4" marker-end="url(#arrow-green)" />
+                    <!-- Cheongsapo to Yonggungsa -->
+                    <path d="M 540 160 Q 620 120 700 80" fill="none" stroke="#3b312a" stroke-width="8" />
+                    <path d="M 540 160 Q 620 120 700 80" fill="none" stroke="#2ecc71" stroke-width="4" marker-end="url(#arrow-green)" />
+                    <!-- Yonggungsa to X the SKY (Return loop) -->
+                    <path d="M 680 100 Q 450 350 300 320" fill="none" stroke="#3b312a" stroke-width="8" />
+                    <path d="M 680 100 Q 450 350 300 320" fill="none" stroke="#2ecc71" stroke-width="4" marker-end="url(#arrow-green)" />
+                </svg>
+
+                <svg class="compass"><use href="#compass-icon"/></svg>
+
+                <!-- 標籤與地標 -->
+                <div class="day-badge bg-[#2ecc71]" style="left: 55%; top: 12%;">Day 2</div>
+                
+                <div class="map-point" style="left: 25%; top: 55%;">
+                    <div class="icon-box hotel"><span class="text-xs">🛏️</span></div>
+                    <div class="label-box">飯店</div>
+                </div>
+
+                <div class="map-point" style="left: 37.5%; top: 48%;">
+                    <div class="icon-box train">🚂</div>
+                    <div class="label-box">尾浦站</div>
+                </div>
+
+                <div class="map-point" style="left: 65%; top: 38%;">
+                    <div class="icon-box" style="background: #81ecec;">🛤️</div>
+                    <div class="label-box">青沙浦</div>
+                </div>
+
+                <div class="map-point" style="left: 88%; top: 17%;">
+                    <div class="icon-box" style="background: #e17055;">⛩️</div>
+                    <div class="label-box">海東龍宮寺</div>
+                </div>
+
+                <div class="map-point" style="left: 35%; top: 71%;">
+                    <div class="icon-box" style="background: #a29bfe;">☁️</div>
+                    <div class="label-box">X the SKY / 汗蒸幕</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="col-span-2">
+                <div class="timeline text-gray-700">
+                    <div class="timeline-item"><strong>上午：</strong>早餐後步行約10分至尾浦站<br>搭乘 Blue Line Beach Train (尾浦 ➡️ 青沙浦)</div>
+                    <div class="timeline-item"><strong>中午：</strong>🚕 約10分至海東龍宮寺參觀，並於附近享用午餐</div>
+                    <div class="timeline-item"><strong>下午：</strong>🚕 約10分回程至 BUSAN X the SKY 賞高空海景</div>
+                    <div class="timeline-item"><strong>傍晚：</strong>步行3分至 ClubD Oasis (汗蒸幕/足浴/休息)</div>
+                    <div class="timeline-item"><strong>晚上：</strong>步行約8分返回 Fairfield Busan</div>
+                </div>
+                <p class="text-sm bg-blue-100 p-2 mt-2 rounded inline-block">💡 <strong>優點：</strong>一路由西向東，再直接搭車返回海雲台商圈，完全不繞路。</p>
+            </div>
+            <div class="bg-yellow-50 p-4 rounded sketch-border-alt h-fit">
+                <h4 class="font-bold mb-2">🌟 今日亮點</h4>
+                <div class="badge">🚂 海岸列車</div>
+                <div class="badge">⛩️ 海東龍宮寺</div>
+                <div class="badge">☁️ X the SKY</div>
+                <div class="badge">🧖 ClubD 汗蒸幕</div>
+
+                <div class="polaroid" style="bottom: 20px; right: 20px; transform: rotate(-5deg);">
+                    <div class="photo-placeholder" style="background: #27ae60;"></div>
+                    Beach Train
+                </div>
+                <div class="polaroid" style="bottom: 20px; right: 20px; transform: rotate(4deg);">
+                    <div class="photo-placeholder" style="background: #27ae60;">
+                        <img src="https://clubdoasis.com/img/enjoy/bg_oasis0-2.jpg">
+                    </div>
+                    Beach Train
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Day 3 -->
+    <section class="sketch-border p-6 relative">
+        <div class="tape-corner" style="top:-5px; right:-20px; left:auto; transform: rotate(45deg);"></div>
+        <h2 class="text-2xl font-bold mb-2"><span class="highlight">Day 3｜松島海岸＋白淺灘＋廣安里夜景</span></h2>
+        <p class="text-sm text-gray-500 mb-4">🚕 交通：計程車＋步行 | 🚶 步行量：★★☆☆☆ 輕鬆</p>
+
+        <!-- 手繪地圖 Day 3 -->
+        <div class="vintage-map-wrapper">
+            <div class="vintage-map-inner-border">
+                <svg viewBox="0 0 800 450" class="absolute inset-0 w-full h-full z-10" preserveAspectRatio="xMidYMid slice">
+                    <use href="#map-bg-pattern" />
+                    <!-- Day 3 路徑 (紫色) -->
+                    <!-- Hotel to Songdo (Long arrow) -->
+                    <path d="M 720 220 Q 400 50 120 350" fill="none" stroke="#3b312a" stroke-width="8" />
+                    <path d="M 720 220 Q 400 50 120 350" fill="none" stroke="#9b59b6" stroke-width="4" marker-end="url(#arrow-purple)" />
+                    <!-- Songdo to Huinnyeoul -->
+                    <path d="M 140 380 Q 240 400 320 360" fill="none" stroke="#3b312a" stroke-width="8" />
+                    <path d="M 140 380 Q 240 400 320 360" fill="none" stroke="#9b59b6" stroke-width="4" marker-end="url(#arrow-purple)" />
+                    <!-- Huinnyeoul to Gwangalli -->
+                    <path d="M 360 340 Q 480 300 560 290" fill="none" stroke="#3b312a" stroke-width="8" />
+                    <path d="M 360 340 Q 480 300 560 290" fill="none" stroke="#9b59b6" stroke-width="4" marker-end="url(#arrow-purple)" />
+                    <!-- Gwangalli back to Hotel -->
+                    <path d="M 600 270 Q 680 250 720 230" fill="none" stroke="#3b312a" stroke-width="8" />
+                    <path d="M 600 270 Q 680 250 720 230" fill="none" stroke="#9b59b6" stroke-width="4" marker-end="url(#arrow-purple)" />
+                </svg>
+
+                <svg class="compass"><use href="#compass-icon"/></svg>
+
+                <!-- 標籤與地標 -->
+                <div class="day-badge bg-[#9b59b6]" style="left: 45%; top: 10%;">Day 3 (跨區直達)</div>
+                
+                <div class="map-point" style="left: 93%; top: 44%;">
+                    <div class="icon-box hotel"><span class="text-xs">🛏️</span></div>
+                    <div class="label-box">飯店</div>
+                </div>
+
+                <div class="map-point" style="left: 15%; top: 84%;">
+                    <div class="icon-box" style="background: #e84393;">🚠</div>
+                    <div class="label-box">松島纜車/步道</div>
+                </div>
+
+                <div class="map-point" style="left: 43%; top: 77%;">
+                    <div class="icon-box" style="background: #74b9ff;">☕</div>
+                    <div class="label-box">白淺灘文化村</div>
+                </div>
+
+                <div class="map-point" style="left: 72%; top: 62%;">
+                    <div class="icon-box" style="background: #0984e3; color:white;">🌉</div>
+                    <div class="label-box">廣安里海灘</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="col-span-2">
+                <div class="timeline text-gray-700">
+                    <div class="timeline-item"><strong>上午：</strong>🚕 直奔松島海水浴場。體驗松島海上纜車、松島天空步道</div>
+                    <div class="timeline-item"><strong>中午：</strong>於松島享用午餐</div>
+                    <div class="timeline-item"><strong>下午：</strong>🚕 約10分至白淺灘文化村，漫步海景步道、找間特色咖啡廳看海休息</div>
+                    <div class="timeline-item"><strong>傍晚：</strong>🚕 約30分前往廣安里海水浴場，海邊散步</div>
+                    <div class="timeline-item"><strong>晚上：</strong>欣賞廣安大橋夜景及無人機燈光秀 (依當日公告)<br><span class="text-sm text-gray-500">🚕 約20分返回飯店</span></div>
+                </div>
+                <p class="text-sm bg-blue-100 p-2 mt-2 rounded inline-block">💡 <strong>優點：</strong>從最西南的松島一路往東移動至廣安里，最後回海雲台，動線非常順暢。</p>
+            </div>
+            <div class="bg-yellow-50 p-4 rounded sketch-border-alt h-fit">
+                <h4 class="font-bold mb-2">🌟 今日亮點</h4>
+                <div class="badge">🚠 松島海上纜車</div>
+                <div class="badge">🌊 松島天空步道</div>
+                <div class="badge">🏘️ 白淺灘海景</div>
+                <div class="badge">🌉 廣安大橋夜景</div>
+                <div class="badge">✨ 無人機表演</div>
+
+                <div class="polaroid" style="bottom: 20px; right: 20px; transform: rotate(-5deg);">
+                    <div class="photo-placeholder" style="background: #8e44ad; border-bottom: 5px solid #2980b9;"></div>
+                    Gwangalli Night
+                </div>
+                <div class="polaroid" style="bottom: 20px; right: 20px; transform: rotate(4deg);">
+                    <div class="photo-placeholder" style="background: #8e44ad; border-bottom: 5px solid #2980b9;">
+                        <img src="https://tse4.mm.bing.net/th/id/OIP.slNN03sz8mUGoUWtjcPoAQHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3">
+                    </div>
+                    Gwangalli Night
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Day 4 -->
+    <section class="sketch-border p-6 relative">
+        <div class="tape text-center" style="left: 20%; top: -10px; width: 60px;"></div>
+        <h2 class="text-2xl font-bold mb-2"><span class="highlight">Day 4｜甘川文化村＋南浦洞商圈</span></h2>
+        <p class="text-sm text-gray-500 mb-4">🚕 交通：計程車＋步行 | 🚶 步行量：★★★☆☆ 中等</p>
+
+        <!-- 手繪地圖 Day 4 -->
+        <div class="vintage-map-wrapper">
+            <div class="vintage-map-inner-border">
+                <svg viewBox="0 0 800 450" class="absolute inset-0 w-full h-full z-10" preserveAspectRatio="xMidYMid slice">
+                    <use href="#map-bg-pattern" />
+                    <!-- Day 4 路徑 (橘色) -->
+                    <!-- Hotel to Gamcheon -->
+                    <path d="M 720 200 Q 450 80 180 150" fill="none" stroke="#3b312a" stroke-width="8" />
+                    <path d="M 720 200 Q 450 80 180 150" fill="none" stroke="#f39c12" stroke-width="4" marker-end="url(#arrow-orange)" />
+                    <!-- Gamcheon to Nampo -->
+                    <path d="M 180 170 Q 250 250 330 270" fill="none" stroke="#3b312a" stroke-width="8" />
+                    <path d="M 180 170 Q 250 250 330 270" fill="none" stroke="#f39c12" stroke-width="4" marker-end="url(#arrow-orange)" />
+                    <!-- Nampo back to Hotel -->
+                    <path d="M 370 280 Q 550 320 730 230" fill="none" stroke="#3b312a" stroke-width="8" />
+                    <path d="M 370 280 Q 550 320 730 230" fill="none" stroke="#f39c12" stroke-width="4" marker-end="url(#arrow-orange)" />
+                </svg>
+
+                <svg class="compass"><use href="#compass-icon"/></svg>
+
+                <!-- 標籤與地標 -->
+                <div class="day-badge bg-[#f39c12]" style="left: 30%; top: 12%;">Day 4</div>
+                
+                <div class="map-point" style="left: 93%; top: 44%;">
+                    <div class="icon-box hotel"><span class="text-xs">🛏️</span></div>
+                    <div class="label-box">飯店</div>
+                </div>
+
+                <div class="map-point" style="left: 20%; top: 33%;">
+                    <div class="icon-box" style="background: #ff7675;">🦊</div>
+                    <div class="label-box">甘川文化村</div>
+                </div>
+
+                <div class="map-point" style="left: 43%; top: 62%;">
+                    <div class="icon-box" style="background: #fdcb6e;">🛍️</div>
+                    <div class="label-box">BIFF/南浦洞商圈</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="col-span-2">
+                <div class="timeline text-gray-700">
+                    <div class="timeline-item"><strong>上午：</strong>🚕 約35分鐘直達甘川文化村<br><span class="text-sm text-gray-500">※ 強烈建議搭車至高處入口，慢慢往下走才不費力</span></div>
+                    <div class="timeline-item"><strong>中午：</strong>🚕 約10分鐘抵達 BIFF廣場，周邊享用美食</div>
+                    <div class="timeline-item"><strong>下午：</strong>光復路商圈自由逛街、喝下午茶</div>
+                    <div class="timeline-item"><strong>傍晚/晚餐：</strong>一路步行至富平罐頭市場吃特色小吃</div>
+                    <div class="timeline-item"><strong>晚上：</strong>🚕 約35分鐘返回 Fairfield Busan</div>
+                </div>
+                <p class="text-sm bg-blue-100 p-2 mt-2 rounded inline-block">💡 <strong>優點：</strong>整天集中在南浦洞周邊大區域，只需早晚兩趟長途車，中途無需頻繁跨區。</p>
+            </div>
+            <div class="bg-yellow-50 p-4 rounded sketch-border-alt h-fit">
+                <h4 class="font-bold mb-2">🌟 今日亮點</h4>
+                <div class="badge">🦊 甘川小王子</div>
+                <div class="badge">🎬 BIFF廣場</div>
+                <div class="badge">🛍️ 南浦洞商圈</div>
+                <div class="badge">🍢 富平罐頭市場</div>
+
+                <div class="polaroid" style="bottom: 20px; right: 20px; transform: rotate(-5deg);">
+                    <div class="photo-placeholder" style="background: #f1c40f; border-bottom: 5px solid #d35400;"></div>
+                    Gamcheon
+                </div>
+                <div class="polaroid" style="bottom: 20px; right: 20px; transform: rotate(4deg);">
+                    <div class="photo-placeholder" style="background: #f1c40f; border-bottom: 5px solid #d35400;">
+                        <img src="https://judyer.com/wp-content/uploads/20180331181339_37.jpg">
+                    </div>
+                    Gamcheon
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Day 5 -->
+    <section class="sketch-border p-6 relative">
+        <div class="tape-corner"></div>
+        <h2 class="text-2xl font-bold mb-2"><span class="highlight">Day 5｜悠閒散步・準備返台</span></h2>
+        <p class="text-sm text-gray-500 mb-4">🚶 交通：步行＋計程車 | 🚶 步行量：★★☆☆☆ 輕鬆</p>
+
+        <!-- 手繪地圖 Day 5 -->
+        <div class="vintage-map-wrapper">
+            <div class="vintage-map-inner-border">
+                <svg viewBox="0 0 800 450" class="absolute inset-0 w-full h-full z-10" preserveAspectRatio="xMidYMid slice">
+                    <use href="#map-bg-pattern" />
+                    <!-- Day 5 路徑 (藍色) -->
+                    <!-- Hotel to Dongbaek/Bay 101 -->
+                    <path d="M 680 180 L 630 280" fill="none" stroke="#3b312a" stroke-width="8" stroke-dasharray="10,5" />
+                    <path d="M 680 180 L 630 280" fill="none" stroke="#3498db" stroke-width="4" marker-end="url(#arrow-blue)" />
+                    <!-- Bay 101 to Airport -->
+                    <path d="M 580 300 Q 350 350 180 260" fill="none" stroke="#3b312a" stroke-width="8" />
+                    <path d="M 580 300 Q 350 350 180 260" fill="none" stroke="#3498db" stroke-width="4" marker-end="url(#arrow-blue)" />
+                </svg>
+
+                <svg class="compass"><use href="#compass-icon"/></svg>
+
+
+                <!-- 標籤與地標 -->
+                <div class="day-badge bg-[#3498db]" style="left: 35%; top: 68%;">Day 5 (搭機返家)</div>
+                
+                <div class="map-point" style="left: 87%; top: 33%;">
+                    <div class="icon-box hotel"><span class="text-xs">🛏️</span></div>
+                    <div class="label-box">飯店 (寄放行李)</div>
+                </div>
+
+                <div class="map-point" style="left: 75%; top: 66%;">
+                    <div class="icon-box" style="background: #1abc9c;">🌲</div>
+                    <div class="label-box">冬柏島 / The Bay 101</div>
+                </div>
+
+                <div class="map-point" style="left: 18%; top: 55%;">
+                    <div class="icon-box train">✈️</div>
+                    <div class="label-box">金海機場</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="col-span-2">
+                <div class="timeline text-gray-700">
+                    <div class="timeline-item"><strong>上午：</strong>早餐後辦理退房（將行李寄放在飯店櫃檯）<br>🚶 步行約15分前往冬柏島，沿著海岸步道散步至 APEC世峰樓</div>
+                    <div class="timeline-item"><strong>中午：</strong>賞海<br>🚶 步行約10分至 The Bay 101 喝咖啡、吃早午餐，欣賞白天遊艇港的寧靜景色</div>
+                    <div class="timeline-item"><strong>下午：</strong>返回飯店領取行李<br>🚕 約35-45分鐘前往金海機場，平安返家！</div>
+                </div>
+            </div>
+            <div class="bg-yellow-50 p-4 rounded sketch-border-alt h-fit">
+                <h4 class="font-bold mb-2">🌟 今日亮點</h4>
+                <div class="badge">🌲 冬柏島步道</div>
+                <div class="badge">🏛️ APEC世峰樓</div>
+                <div class="badge">☕ The Bay 101</div>
+                <div class="badge">✈️ 悠閒滿載而歸</div>
+
+                <div class="polaroid" style="bottom: 20px; right: 20px; transform: rotate(-5deg);">
+                    <div class="photo-placeholder" style="background: #34495e; border-bottom: 5px solid #2c3e50;"></div>
+                    Goodbye
+                </div>
+                <div class="polaroid" style="bottom: 20px; right: 20px; transform: rotate(4deg);">
+                    <div class="photo-placeholder" style="background: #34495e; border-bottom: 5px solid #2c3e50;">
+                        <img src="https://res.klook.com/image/upload/fl_lossy.progressive,q_85/c_fill,w_1000/v1727879285/odlhim8fiwf2e7igf18d.jpg">
+                    </div>
+                    Goodbye
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 總結與評價 -->
+    <section class="sketch-border p-6 mb-12 bg-white">
+        <h2 class="text-2xl font-bold mb-4">📌 行程總結</h2>
+        
+        <div class="text-gray-700 space-y-4">            
+            <ul class="list-disc pl-6 space-y-2">
+                <li><strong>🗺️ 交通動線：</strong>嚴格遵守「區域規劃」，避免了東南西北來回跑的疲憊。每日的交通以計程車代步，完美規避了長輩轉乘地鐵與爬樓梯的體力消耗。</li>
+                <li><strong>⏳ 節奏安排：</strong>每天僅安排 2～4 個重點區域，保留了充足的咖啡廳休息與用餐時間。特別是 Day 4 提醒「甘川文化村從高處往下走」，非常貼心！</li>
+                <li><strong>📸 景點內容：</strong>海東龍宮寺的傳統文化、松島與海雲台的海景、白淺灘與甘川的文青風情、汗蒸幕的放鬆體驗一應俱全，是首次造訪釜山的完美縮影。</li>
+            </ul>
+
+            <div class="mt-4 p-4 border-2 border-dashed border-red-300 bg-red-50 rounded-lg">
+                <strong>⚠️ 行前小叮嚀：</strong><br>
+                關於 Day 3 的<strong>廣安里無人機秀</strong>，請務必於出發前一週至官方網站或社群確認演出公告（可能會因海風過大、氣候或季節因素臨時取消）。若當天無演出，改至民樂水邊公園散步吃海鮮，或是找間廣安大橋第一排的咖啡廳坐坐，也完全不減損行程的美好！
+            </div>
+        </div>
+    </section>
+
+</div>
+
+</body>
+</html>
