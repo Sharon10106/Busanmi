@@ -203,23 +203,51 @@
 </head>
 <body class="py-8 px-4 md:px-0">
 
+    <!-- RWD導覽列容器:
+        在大螢幕 md:static 顯示。
+        在手機版改為 fixed 固定位置，隱藏並透過懸浮按鈕觸發。
+    -->
+    <nav id="nav-container" class="max-w-3xl mx-auto mb-6 bg-[#fffdf5] paper-card rounded-lg overflow-hidden hidden md:block md:border-2 md:border-black">
+        <div class="flex items-center justify-between p-4 border-b-2 border-[#000000]">
+            <h1 class="text-3xl md:text-4xl font-bold mb-4 tracking-wider">釜山悠閒五日遊手冊</h1>
+            <p class="text-gray-600 mb-6 text-lg">海景 🌊 × 美食 🍲 × 文化 🏘️</p>
+        </div>
+
+        <div id="nav-links" class="flex flex-col bg-[#ffffff] md:flex-row">
+            <button onclick="switchTab('home')" class="tab-btn px-6 py-3 text-left border-b md:border-b-0 border-[#dcd3c1] hover:bg-[#edece0] text-[#5d4037] font-bold">首頁</button>
+            <button onclick="switchTab('day1')" class="tab-btn px-6 py-3 text-left border-b md:border-b-0 border-[#dcd3c1] hover:bg-[#edece0] text-[#5d4037] font-bold">Day 1</button>
+            <button onclick="switchTab('day2')" class="tab-btn px-6 py-3 text-left border-b md:border-b-0 border-[#dcd3c1] hover:bg-[#edece0] text-[#5d4037] font-bold">Day 2</button>
+            <button onclick="switchTab('day3')" class="tab-btn px-6 py-3 text-left border-b md:border-b-0 border-[#dcd3c1] hover:bg-[#edece0] text-[#5d4037] font-bold">Day 3</button>
+            <button onclick="switchTab('day4')" class="tab-btn px-6 py-3 text-left border-b md:border-b-0 border-[#dcd3c1] hover:bg-[#edece0] text-[#5d4037] font-bold">Day 4</button>
+            <button onclick="switchTab('day5')" class="tab-btn px-6 py-3 text-left border-b md:border-b-0 border-[#dcd3c1] hover:bg-[#edece0] text-[#5d4037] font-bold">Day 5</button>
+            <button onclick="switchTab('day6')" class="tab-btn px-6 py-3 text-left border-b md:border-b-0 border-[#dcd3c1] hover:bg-[#edece0] text-[#5d4037] font-bold">Day 6</button>
+            <button onclick="switchTab('sum')" class="tab-btn px-6 py-3 text-left hover:bg-[#edece0] text-[#5d4037] font-bold">總結</button>
+        </div>
+    </nav>
+
+    <!-- 手機版懸浮按鈕：僅在小於 md 螢幕寬度時顯示 -->
+    <button id="float-menu-btn" class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-[#5d4037] text-white rounded-full shadow-lg flex items-center justify-center text-2xl z-50">
+        ☰
+    </button>
+
 <div class="max-w-3xl mx-auto space-y-10">
+
 
     <!-- 封面 -->
     <header id="home" class="tab-content active sketch-border p-8 relative mt-4">
-        <div class="tape"></div>
+        <div class="tape text-center" style="left: 20%; top: -10px; width: 60px;"></div>
+        <h2 class="text-2xl font-bold mb-2"><span class="highlight">Overview</span></h2>
+        <p class="text-sm text-gray-500 mb-4">🚕 交通：計程車＋步行 | 🚶 步行量：★★⯪☆☆ 中等</p>
         <div class="text-center">
-            <h1 class="text-3xl md:text-4xl font-bold mb-4 tracking-wider">🇰🇷 釜山悠閒五日遊手冊</h1>
-            <p class="text-gray-600 mb-6 text-lg">海景 🌊 × 美食 🍲 × 文化 🏘️</p>
             <img src="./img/overview.png"/>
             <div class="bg-blue-50 p-4 rounded-lg sketch-border-alt text-left mb-4">
                 <h3 class="font-bold text-lg mb-2">✨ 行程最高原則</h3>
                 <ul class="space-y-2 text-gray-700">
-                    <li>✅ <strong>不走回頭路：</strong><br/>順著地理方位規劃。</li>
-                    <li>✅ <strong>區域劃分：</strong><br/>每天集中一個大區，減少拉車。</li>
-                    <li>✅ <strong>悠閒漫遊：</strong><br/>絕不趕行程，適合輕鬆遊。</li>
-                    <li>✅ <strong>固定住宿：</strong><br/>全程入住 Fairfield by Marriott Busan (海雲台)。</li>
-                    <li>✅ <strong>舒適交通：</strong><br/>以計程車 🚕 為主，必要時步行 🚶。</li>
+                    <li>✅ <strong>不走回頭路：</strong><br>順著地理方位規劃。</li>
+                    <li>✅ <strong>區域劃分：</strong><br>每天集中一個大區，減少拉車。</li>
+                    <li>✅ <strong>悠閒漫遊：</strong><br>絕不趕行程，適合輕鬆遊。</li>
+                    <li>✅ <strong>固定住宿：</strong><br>全程入住 <a href="https://maps.app.goo.gl/VSABg8qLjTfKwego9" class="text-blue-500 hover:underline">Fairfield by Marriott Busan (海雲台)</a>。</li>
+                    <li>✅ <strong>舒適交通：</strong><br>以計程車 🚕 為主，必要時步行 🚶。</li>
                 </ul>
             </div>
         </div>
@@ -327,28 +355,60 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="col-span-2">
                 <div class="timeline text-gray-700">
-                    <div class="timeline-item"><strong>下午：</strong>抵達金海機場<br/>🚕 約35–45分鐘前往飯店寄放行李／Check-in</div>
-                    <div class="timeline-item"><strong>下午：</strong>海雲台傳統市場（午餐／晚餐）<br/> 🚶步行約10分鐘</div>
-                    <div class="timeline-item"><strong>傍晚：</strong>龜南路商圈散步 ➡️ 海雲台海水浴場看夕陽/夜景<br/> 🚶步行約10分鐘</div>
-                    <div class="timeline-item"><strong>晚上：</strong>返回飯店休息，適應旅程節奏<br/> 🚶步行約10分鐘</div>
+                    <div class="timeline-item"><strong>下午：</strong>抵達金海機場<br>🚕 約35–45分鐘前往飯店寄放行李／Check-in<br>
+                        <a href="https://www.google.com/maps/dir/%E9%87%9C%E5%B1%B1%2F%E9%87%91%E6%B5%B7%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4+%E5%8D%97%E9%9F%93+Busan,+Gangseo-gu,+Gonghangjinip-ro,+108/%E9%87%9C%E5%B1%B1%E8%90%AC%E6%A5%93%E9%85%92%E5%BA%97+%E5%8D%97%E9%9F%93+Busan,+Haeundae-gu,+Haeundaehaebyeon-ro,+314/@35.1574084,128.8911931,11z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x356892c12212f70d:0x15a3a9429a8c32ec!2m2!1d128.9471783!2d35.1728688!1m5!1m1!1s0x3568933f054fe433:0x66d0961366dd4318!2m2!1d129.164835!2d35.161637?entry=ttu&g_ep=EgoyMDI2MDcxNS4wIKXMDSoASAFQAw%3D%3D" 
+                        target="_blank" 
+                        class="inline-block px-2 py-1 text-[#998866] border border-[#998866] bg-[#ffeecc] rounded hover:bg-[#998866] hover:text-white transition duration-300">
+                            🧭Google
+                        </a>
+                        <a href="https://map.naver.com/p/directions/3ACgT6,2z9CPl,%EA%B9%80%ED%95%B4%EA%B5%AD%EC%A0%9C%EA%B3%B5%ED%95%AD,13036655,PLACE_POI/3ALq8z,2z98NG,%ED%8E%98%EC%96%B4%ED%95%84%EB%93%9C%20%EB%B0%94%EC%9D%B4%20%EB%A9%94%EB%A6%AC%EC%96%B4%ED%8A%B8%20%EB%B6%80%EC%82%B0%20%ED%98%B8%ED%85%94,1162213010,PLACE_POI/-/car?c=10.00,0,0,0,dh" 
+                        target="_blank" 
+                        class="inline-block px-2 py-1 text-[#558877] border border-[#669988] bg-[#aaddcc] rounded hover:bg-[#669988] hover:text-white transition duration-300">
+                            🧭Naver
+                        </a>
+                    </div>
+                    <div class="timeline-item"><strong>下午：</strong>海雲台傳統市場（午餐／晚餐）<br> 🚶步行約10分鐘</div>
+                    <div class="timeline-item"><strong>傍晚：</strong>龜南路商圈散步 ➡️ 海雲台海水浴場看夕陽/夜景<br> 🚶步行約10分鐘</div>
+                    <div class="timeline-item"><strong>晚上：</strong>返回飯店休息，適應旅程節奏<br> 🚶步行約10分鐘</div>
                 </div>
             </div>
             <div class="bg-yellow-50 p-4 rounded sketch-border-alt h-fit">
                 <h4 class="font-bold mb-2">🌟 今日亮點</h4>
-                <div class="badge"><a href="https://maps.app.goo.gl/cNPD4UfcxiiBfhPt6" class="text-blue-500 hover:underline">🍢 海雲台市場美食</a></div>
-                <div class="badge"><a href="https://maps.app.goo.gl/qexmxgRjf4jw8enx5" class="text-blue-500 hover:underline">🍜 海雲台31cm海鮮刀削麵</a></div>
+                <div class="badge"><a href="https://maps.app.goo.gl/cNPD4UfcxiiBfhPt6" class="text-blue-500 hover:underline">🍢 海雲台市場美食</a>
+                    <a href="https://www.google.com/maps/dir/?api=1&origin=Fairfield+by+Marriott+Busan+Haeundae&destination=Haeundae+Traditional+Market" 
+                    target="_blank" 
+                    class="inline-block px-2 py-1 text-[#998866] border border-[#998866] bg-[#ffeecc] rounded hover:bg-[#998866] hover:text-white transition duration-300">
+                        🧭G
+                    </a>
+                    <a href="https://map.naver.com/p/directions/3ALq8z,2z98NG,%ED%8E%98%EC%96%B4%ED%95%84%EB%93%9C%20%EB%B0%94%EC%9D%B4%20%EB%A9%94%EB%A6%AC%EC%96%B4%ED%8A%B8%20%EB%B6%80%EC%82%B0%20%ED%98%B8%ED%85%94,1162213010,PLACE_POI/3ALlpj,2z9ak1,%ED%95%B4%EC%9A%B4%EB%8C%8031cm%ED%95%B4%EB%AC%BC%EC%B9%BC%EA%B5%AD%EC%88%98%20%EC%A7%81%EC%98%81%EC%A0%90,1812508466,PLACE_POI/-/walk?c=17.00,0,0,0,adh&p=sfR8ZiA_agZWr853cJnb5A,-166.33,10,45,Float&isMini=true" 
+                    target="_blank" 
+                    class="inline-block px-2 py-1 text-[#558877] border border-[#669988] bg-[#aaddcc] rounded hover:bg-[#669988] hover:text-white transition duration-300">
+                        🧭N
+                    </a>
+                </div>
+                <div class="badge"><a href="https://maps.app.goo.gl/qexmxgRjf4jw8enx5" class="text-blue-500 hover:underline">🍜 海雲台31cm海鮮刀削麵</a>
+                    <a href="https://www.google.com/maps/dir/%E9%87%9C%E5%B1%B1%E8%90%AC%E6%A5%93%E9%85%92%E5%BA%97+%E5%8D%97%E9%9F%93+Busan,+Haeundae-gu,+Haeundaehaebyeon-ro,+314/Haeundae+31cm+Haemul(seafood)+Kalguksu,+46+Gunam-ro+41beon-gil,+Haeundae-gu,+Busan,+%E5%8D%97%E9%9F%93/@35.1621591,129.1631891,17.75z/data=!4m14!4m13!1m5!1m1!1s0x3568933f054fe433:0x66d0961366dd4318!2m2!1d129.164835!2d35.161637!1m5!1m1!1s0x35688df3df118089:0xf812772a92067c2b!2m2!1d129.1630449!2d35.1621438!3e3?entry=ttu&g_ep=EgoyMDI2MDcxNS4wIKXMDSoASAFQAw%3D%3D" 
+                    target="_blank" 
+                    class="inline-block px-2 py-1 text-[#998866] border border-[#998866] bg-[#ffeecc] rounded hover:bg-[#998866] hover:text-white transition duration-300">
+                        🧭G
+                    </a>
+                    <a href="https://map.naver.com/p/directions/3ALq8z,2z98NG,%ED%8E%98%EC%96%B4%ED%95%84%EB%93%9C%20%EB%B0%94%EC%9D%B4%20%EB%A9%94%EB%A6%AC%EC%96%B4%ED%8A%B8%20%EB%B6%80%EC%82%B0%20%ED%98%B8%ED%85%94,1162213010,PLACE_POI/3ALlpj,2z9ak1,%ED%95%B4%EC%9A%B4%EB%8C%8031cm%ED%95%B4%EB%AC%BC%EC%B9%BC%EA%B5%AD%EC%88%98%20%EC%A7%81%EC%98%81%EC%A0%90,1812508466,PLACE_POI/-/walk?c=17.00,0,0,0,adh&p=sfR8ZiA_agZWr853cJnb5A,-166.33,10,45,Float&isMini=true" 
+                    target="_blank" 
+                    class="inline-block px-2 py-1 text-[#558877] border border-[#669988] bg-[#aaddcc] rounded hover:bg-[#669988] hover:text-white transition duration-300">
+                        🧭N
+                    </a></div>
                 <div class="badge"><a href="https://maps.app.goo.gl/343oq5WocbyNkEP38" class="text-blue-500 hover:underline">🏖️ 海雲台沙灘</a></div>
                 <div class="badge"><a href="https://maps.app.goo.gl/Pv6efnBYN9EocxuH9" class="text-blue-500 hover:underline">🧘 龜南路商圈</a></div>
 
                 <div class="polaroid" style="bottom: 20px; right: 20px; transform: rotate(-5deg);">
                     <div class="photo-placeholder" style="background: #2c3e50; border-bottom: 5px solid #34495e;"></div>
-                    Haeundae Night
+                    TAIPEI ✈️ BUSAN
                 </div>
                 <div class="polaroid" style="bottom: 20px; right: 20px; transform: rotate(4deg);">
                     <div class="photo-placeholder" style="background: #2c3e50; border-bottom: 5px solid #34495e;">
                         <img src="https://p1-news.hfcdn.com/p1-news/MzI2OTI5OW5ld3M,/a1564068939c4c80_1600x1067.jpg">
                     </div>
-                    Haeundae Night2
+                    TAIPEI ✈️ BUSAN
                 </div>
             </div>
         </div>
@@ -415,11 +475,11 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="col-span-2">
                 <div class="timeline text-gray-700">
-                    <div class="timeline-item"><strong>上午：</strong>海岸/膠囊列車 <br/>🚶步行約10分鐘至 Blue Line Beach Train 尾浦站<br>🚂 海岸/膠囊列車 (尾浦 ➡️ 青沙浦: 約25分鐘) </div>
-                    <div class="timeline-item"><strong>中午：</strong>海東龍宮寺 <br/> 🚕 約10分至海東龍宮寺參觀，並於附近享用午餐</div>
-                    <div class="timeline-item"><strong>下午：</strong>BUSAN X the SKY <br/> 🚕 約10分回程至 BUSAN X the SKY 賞高空海景</div>
-                    <div class="timeline-item"><strong>傍晚：</strong>ClubD Oasis <br/> 🚶約3分鐘至 ClubD Oasis (汗蒸幕/足浴/休息)</div>
-                    <div class="timeline-item"><strong>晚上：</strong>返回飯店 <br/> 🚶約8分鐘返回 Fairfield Busan</div>
+                    <div class="timeline-item"><strong>上午：</strong>海岸/膠囊列車 <br>🚶步行約10分鐘至 Blue Line Beach Train 尾浦站<br>🚂 海岸/膠囊列車 (尾浦 ➡️ 青沙浦: 約25分鐘) </div>
+                    <div class="timeline-item"><strong>中午：</strong>海東龍宮寺 <br> 🚕 約10分至海東龍宮寺參觀，並於附近享用午餐</div>
+                    <div class="timeline-item"><strong>下午：</strong>BUSAN X the SKY <br> 🚕 約10分回程至 BUSAN X the SKY 賞高空海景</div>
+                    <div class="timeline-item"><strong>傍晚：</strong>ClubD Oasis <br> 🚶約3分鐘至 ClubD Oasis (汗蒸幕/足浴/休息)</div>
+                    <div class="timeline-item"><strong>晚上：</strong>返回飯店 <br> 🚶約8分鐘返回 Fairfield Busan</div>
                 </div>
                 <p class="text-sm bg-blue-100 p-2 mt-2 rounded inline-block">💡 <strong>優點：</strong>一路由西向東，再直接搭車返回海雲台商圈，完全不繞路。</p>
             </div>
@@ -698,29 +758,33 @@
         </div>
     </section>
 
-    <nav class="flex flex-wrap gap-2 justify-center border-t-2 border-dashed border-[#dcd3c1] pt-6">
-        <button onclick="openTab(event, 'home')" class="tab-btn px-4 py-2 bg-[#e0d8c3] rounded-b-lg font-bold text-[#5d4037] hover:bg-[#d4caae] transition active">首頁</button>
-        <button onclick="openTab(event, 'day1')" class="tab-btn px-4 py-2 bg-[#e0d8c3] rounded-b-lg font-bold text-[#5d4037] hover:bg-[#d4caae]">Day 1</button>
-        <button onclick="openTab(event, 'day2')" class="tab-btn px-4 py-2 bg-[#e0d8c3] rounded-b-lg font-bold text-[#5d4037] hover:bg-[#d4caae]">Day 2</button>
-        <button onclick="openTab(event, 'day3')" class="tab-btn px-4 py-2 bg-[#e0d8c3] rounded-b-lg font-bold text-[#5d4037] hover:bg-[#d4caae]">Day 3</button>
-        <button onclick="openTab(event, 'day4')" class="tab-btn px-4 py-2 bg-[#e0d8c3] rounded-b-lg font-bold text-[#5d4037] hover:bg-[#d4caae]">Day 4</button>
-        <button onclick="openTab(event, 'day5')" class="tab-btn px-4 py-2 bg-[#e0d8c3] rounded-b-lg font-bold text-[#5d4037] hover:bg-[#d4caae]">Day 5</button>
-        <button onclick="openTab(event, 'sum')" class="tab-btn px-4 py-2 bg-[#e0d8c3] rounded-b-lg font-bold text-[#5d4037] hover:bg-[#d4caae]">結語</button>
-    </nav>
 </div>
 
     <script>
-        function openTab(evt, tabName) {
+        // 點擊懸浮按鈕的邏輯
+        document.getElementById('float-menu-btn').addEventListener('click', function() {
+            // 先平滑滾動到頁面最上方
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // 延遲後展開選單
+            setTimeout(() => {
+                const nav = document.getElementById('nav-container');
+                nav.classList.remove('hidden');
+            }, 300);
+        });
+
+        // 切換頁籤邏輯
+        function switchTab(tabName) {
             const contents = document.getElementsByClassName("tab-content");
             for (let i = 0; i < contents.length; i++) {
                 contents[i].classList.remove("active");
             }
-            const btns = document.getElementsByClassName("tab-btn");
-            for (let i = 0; i < btns.length; i++) {
-                btns[i].style.backgroundColor = "#e0d8c3";
-            }
             document.getElementById(tabName).classList.add("active");
-            evt.currentTarget.style.backgroundColor = "#dcd3c1";
+            
+            // 在手機版上點選後收起選單
+            if (window.innerWidth < 768) {
+                document.getElementById('nav-container').classList.add('hidden');
+            }
         }
     </script>
 </body>
